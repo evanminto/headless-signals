@@ -1,5 +1,5 @@
 import { h, render } from 'preact';
-import { useComputed, useSignal, useSignalEffect } from '@preact/signals';
+import { useComputed, useSignal } from '@preact/signals';
 import htm from 'htm';
 import { toggleButton } from '../../src/components/toggleButton.js';
 import { resizeObserver } from '../../src/tools/resizeObserver.js';
@@ -10,9 +10,10 @@ import { draggable, droppable } from '../../src/tools/dragAndDrop.js';
 import { reorderableList } from '../../src/components/reorderableList.js';
 import { keyboardListener } from '../../src/tools/keyboardListener.js';
 import { mediaQuery } from '../../src/tools/mediaQuery.js';
-import { modalControl } from '../../src/components/modalControl.js';
 import { useHeadlessSignals } from '../../src/preact/useHeadlessSignals.js';
 import { viewTransition } from '../../src/tools/viewTransition.js';
+import { useModalControl } from '../../src/preact/useModalControl.js';
+import { useReorderableList } from '../../src/preact/useReorderableList.js';
 
 const html = htm.bind(h);
 
@@ -108,13 +109,13 @@ function DragAndDrop() {
 }
 
 /**
- * @template T
+ * @template {string} T
  * @param {object} params
  * @param {T[]} params.items 
  * @param {(item: T) => any} [params.renderItem]
  */
 function ReorderableList({ items = [], renderItem = (item) => item }) {
-  const { items: itemsSignal } = useHeadlessSignals(() => reorderableList(items), [items]);
+  const { items: itemsSignal } = useReorderableList(items);
   
   return html`
     <ol>
@@ -168,7 +169,7 @@ function MediaQuery() {
 }
 
 function ModalControl() {
-  const { controlRef, modalRef } = useHeadlessSignals(() => modalControl());
+  const { controlRef, modalRef } = useModalControl();
 
   return html`
     <button ref=${controlRef} type="button">Open</button>
