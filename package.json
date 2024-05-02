@@ -1,0 +1,25 @@
+{
+  "name": "@evanminto/headless-signals",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:evanminto/headless-signals.git",
+  "author": "Evan Minto <evan.minto@gmail.com>",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.js",
+    "./components": "./src/components.js",
+    "./tools": "./src/tools.js"
+  },
+  "scripts": {
+    "demo:preact": "parcel serve ./demo/preact/index.html"
+  },
+  "dependencies": {
+    "@preact/signals": "^1.2.3",
+    "@preact/signals-core": "^1.6.0",
+    "preact": "^10.21.0"
+  },
+  "devDependencies": {
+    "htm": "^3.1.1",
+    "parcel": "^2.12.0"
+  }
+}
