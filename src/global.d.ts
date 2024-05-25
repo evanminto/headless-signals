@@ -1,10 +1,11 @@
-interface Ref<T> {
+export { Signal, ReadonlySignal } from "@preact/signals-core";
+
+export interface Ref<T> {
   (value: T | undefined): void;
   readonly current: T | undefined;
 }
 
-
-type EventNameToTypeMap = {
+export type EventNameToTypeMap = {
   click: PointerEvent;
   keyup: KeyboardEvent;
   keypress: KeyboardEvent;
@@ -25,5 +26,5 @@ type EventNameToTypeMap = {
   close: Event;
 }; 
 
-type EventName = keyof EventNameToTypeMap;
-type EventType<Name> = Name extends EventName ? EventNameToTypeMap[Name] : Event;
+export type EventName = keyof EventNameToTypeMap;
+export type EventType<Name> = Name extends EventName ? EventNameToTypeMap[Name] : Event;

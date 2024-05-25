@@ -2,13 +2,8 @@ import { effect, signal } from "@preact/signals-core";
 import { readonly } from "../readonly.js";
 import { eventListener } from "./eventListener.js";
 
-/**
- * @template T
- * @typedef {import('@preact/signals').Signal<T>} Signal<T>
- */
-
 export function activeElement() {
-  /** @type {Signal<Element | null>} */
+  /** @type {import('../global.d.ts').Signal<Element | null>} */
   const element = signal(null);
   const { targetRef: inTargetRef, event: inEvent, end: endIn } = eventListener('focusin');
   const { targetRef: outTargetRef, event: outEvent, end: endOut } = eventListener('focusout');

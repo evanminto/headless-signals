@@ -1,20 +1,15 @@
 import { signal } from '@preact/signals-core';
 import { readonly } from '../readonly.js';
 
-/** 
- * @template T
- * @typedef {import('@preact/signals').Signal<T>} Signal
- */
-
 /**
  * @template T
  * @param {Promise<T>} promise
  */
 export function deferred(promise) {
-  /** @type {Signal<T | undefined>} */
+  /** @type {import('../global.d.ts').Signal<T | undefined>} */
   const value = signal(undefined);
   const isPending = signal(true);
-  /** @type {Signal<Error | undefined>} */
+  /** @type {import('../global.d.ts').Signal<Error | undefined>} */
   const error = signal(undefined);
 
   promise

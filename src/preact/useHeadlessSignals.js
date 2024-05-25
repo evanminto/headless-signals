@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'preact/hooks';
+import { useMemo, useRef } from 'preact/hooks';
 
 const registry = new FinalizationRegistry(cleanupRef => {
   cleanupRef.current && cleanupRef.current(); // cleanup on unmount
@@ -12,7 +12,7 @@ const registry = new FinalizationRegistry(cleanupRef => {
  * @param {() => [T, () => void] | [T]} callback
  * @param {Dependencies} deps
  */
-export default function useMemoCleanup(callback, deps) {
+function useMemoCleanup(callback, deps) {
   /** @type {import('preact/hooks').MutableRef<(() => void) | null>} */
   const cleanupRef = useRef(null); // holds a cleanup value
   const unmountRef = useRef(false); // the GC-triggering candidate

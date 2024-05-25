@@ -1,5 +1,4 @@
 import { effect, signal } from "@preact/signals-core";
-import { ref } from "../ref.js";
 import { eventListener } from "../tools/eventListener.js";
 import { readonly } from "../readonly.js";
 

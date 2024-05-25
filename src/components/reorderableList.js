@@ -5,34 +5,19 @@ import { draggable, droppable } from '../tools/dragAndDrop.js';
 
 /**
  * @template T
- * @typedef {import('@preact/signals').Signal<T>} Signal<T>
- */
-
-/**
- * @template T
- * @typedef {import('@preact/signals').ReadonlySignal<T>} ReadonlySignal<T>
- */
-
-/**
- * @template T
- * @typedef {import('../ref.js').Ref<T>} Ref<T>
- */
-
-/**
- * @template T
  * @param {T[]} items
  */
 export function reorderableList(items = []) {
   const itemsSignal = signal(items);
   /**
-   * @type {Signal<{
+   * @type {import('../global.d.ts').Signal<{
    *   item: T;
-   *   dragging: ReadonlySignal<boolean>;
-   *   dropping: ReadonlySignal<boolean>;
-   *   ref: Ref<HTMLElement>;
-   *   handleRef: Ref<Element>;
-   *   draggableRef: Ref<HTMLElement>;
-   *   droppableRef: Ref<HTMLElement>;
+   *   dragging: import('../global.d.ts').ReadonlySignal<boolean>;
+   *   dropping: import('../global.d.ts').ReadonlySignal<boolean>;
+   *   ref: import('../global.d.ts').Ref<HTMLElement>;
+   *   handleRef: import('../global.d.ts').Ref<Element>;
+   *   draggableRef: import('../global.d.ts').Ref<HTMLElement>;
+   *   droppableRef: import('../global.d.ts').Ref<HTMLElement>;
    *   moveUp: () => void;
    *   moveDown: () => void;
    *   moveToTop: () => void;

@@ -51,7 +51,7 @@ export function focusTrap(trapped) {
   }
 
   const trappedSignal = signal(Boolean(trapped));
-  /** @type {Ref<Element>} */
+  /** @type {import('../global.d.ts').Ref<Element>} */
   const targetRef = ref();
 
   effect(() => {

@@ -3,13 +3,8 @@ import { ref } from "../ref.js";
 import { eventListener } from "./eventListener.js";
 import { activeElement } from "./activeElement.js";
 
-/**
- * @template T
- * @typedef {import('@preact/signals').Signal<T>} Signal<T>
- */
-
 export function keyboardListener() {
-  /** @type {Ref<Node>} */
+  /** @type {import('../global.d.ts').Ref<Node>} */
   const targetRef = ref();
   const { targetRef: kbTargetRef, event, end: endListener } = eventListener('keyup');
   const { element: activeEl, end: endActive } = activeElement();

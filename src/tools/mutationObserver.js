@@ -3,19 +3,14 @@ import { readonly } from "../readonly.js";
 import { ref } from "../ref.js";
 
 /**
- * @template T
- * @typedef {import('@preact/signals').Signal<T>} Signal<T>
- */
-
-/**
  * @param {object} [params]
  * @param {MutationObserverInit} [params.options]
  * @param {MutationCallback} [params.onMutation]
  */
 export function mutationObserver({ options, onMutation } = {}) {
-  /** @type {Ref<Node>} */
+  /** @type {import('../global.d.ts').Ref<Node>} */
   const targetRef = ref();
-  /** @type {Signal<MutationRecord[]>} */
+  /** @type {import('../global.d.ts').Signal<MutationRecord[]>} */
   const recordsSignal = signal([]);
 
   const observer = new MutationObserver((records, obs) => {

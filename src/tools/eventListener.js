@@ -3,32 +3,22 @@ import { ref } from "../ref.js";
 import { readonly } from "../readonly.js";
 
 /**
- * @template T
- * @typedef {import('@preact/signals').Signal<T>} Signal<T>
- */
-
-/**
- * @template T
- * @typedef {import('@preact/signals').ReadonlySignal<T>} ReadonlySignal<T>
- */
-
-/**
- * @template {EventName} T
+ * @template {import('../global.d.ts').EventName} T
  * @template {EventTarget} Target
  * @param {T} eventName
- * @param {(event: EventType<T>) => void} [callback]
+ * @param {(event: import('../global.d.ts').EventType<T>) => void} [callback]
  */
 export function eventListener(eventName, callback) {
-  /** @type {Ref<Target>} */
+  /** @type {import('../global.d.ts').Ref<Target>} */
   const targetRef = ref();
-  /** @type {Signal<EventType<T> | null>} */
+  /** @type {import('../global.d.ts').Signal<import('../global.d.ts').EventType<T> | null>} */
   const eventSignal = signal(null);
 
   const end = effect(() => {
     const controller = new AbortController();
     targetRef.current?.addEventListener(
       eventName,
-      /** @param {EventType<T>} event */
+      /** @param {import('../global.d.ts').EventType<T>} event */
       // @ts-ignore
       (event) => {
         eventSignal.value = event;

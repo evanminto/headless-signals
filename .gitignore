@@ -89,7 +89,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+# dist
 
 # Gatsby files
 .cache/
@@ -131,4 +131,4 @@ dist
 
 # Build
 .parcel-cache
-dist
+dist/index.*

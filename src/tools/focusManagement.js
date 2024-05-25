@@ -3,7 +3,7 @@ import { ref } from "../ref.js";
 import { activeElement } from "./activeElement.js";
 
 export function focusManagement() {
-  /** @type {Ref<HTMLOrSVGElement>} */
+  /** @type {import('../global.d.ts').Ref<HTMLOrSVGElement>} */
   const targetRef = ref();
   const { element, end } = activeElement();
 

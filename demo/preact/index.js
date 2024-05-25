@@ -1,19 +1,22 @@
 import { h, render } from 'preact';
 import { useComputed, useSignal } from '@preact/signals';
 import htm from 'htm';
-import { toggleButton } from '../../src/components/toggleButton.js';
-import { resizeObserver } from '../../src/tools/resizeObserver.js';
-import { clipboard } from '../../src/tools/clipboard.js';
-import { showPassword } from '../../src/components/showPassword.js';
-import { focusTrap } from '../../src/tools/focusTrap.js';
-import { draggable, droppable } from '../../src/tools/dragAndDrop.js';
-import { reorderableList } from '../../src/components/reorderableList.js';
-import { keyboardListener } from '../../src/tools/keyboardListener.js';
-import { mediaQuery } from '../../src/tools/mediaQuery.js';
-import { useHeadlessSignals } from '../../src/preact/useHeadlessSignals.js';
-import { viewTransition } from '../../src/tools/viewTransition.js';
-import { useModalControl } from '../../src/preact/useModalControl.js';
-import { useReorderableList } from '../../src/preact/useReorderableList.js';
+import { toggleButton, showPassword } from '../../dist/components/components.js';
+import {
+  resizeObserver,
+  clipboard,
+  focusTrap,
+  draggable,
+  droppable,
+  keyboardListener,
+  mediaQuery,
+  viewTransition
+} from '../../dist/tools/tools.js';
+import {
+  useHeadlessSignals,
+  useModalControl,
+  useReorderableList
+} from '../../dist/preact/preact.js';
 
 const html = htm.bind(h);
 

@@ -1,34 +1,30 @@
-import { effect, signal } from '@preact/signals-core';
+import { computed, effect, signal } from '@preact/signals-core';
 import { readonly } from '../readonly.js';
-import { deferred } from './deferred.js';
 
 /**
- * @template T
- * @typedef {import('@preact/signals').Signal<T>} Signal<T>
- */
-
-/**
- * @template {Array} Args
- * @template Result
- * @param {(args: Args) => Promise<Result> | Result} taskFn 
- * @param {() => Args} getArgs 
+ * @template Dependency
+ * @template Data
+ * @param {(dep?: Dependency | void) => Promise<Data> | Data} taskFn 
+ * @param {() => Dependency | void} getDeps 
  * @param {{ autoRun?: boolean }} [options]
  */
-export function asyncTask(taskFn, getArgs, { autoRun = true } = {}) {
-  /** @type {Signal<Result | null>} */
-  const result = signal(null);
-  const loading = signal(false);
+export function asyncTask(taskFn, getDeps = () => {}, { autoRun = true } = {}) {
+  /** @type {import('../global.d.ts').Signal<Data | null>} */
+  const data = signal(null);
+  const isLoading = signal(false);
+  const deps = computed(getDeps);
+
   const run = async () => {
-    loading.value = true;
-    result.value = await taskFn(getArgs());
-    loading.value = false;
+    isLoading.value = true;
+    data.value = await taskFn(deps.value);
+    isLoading.value = false;
   };
 
   const end = autoRun ? effect(run) : () => {};
 
   return {
-    result: readonly(result),
-    loading: readonly(loading),
+    data: readonly(data),
+    isLoading: readonly(isLoading),
     run,
     end,
   };

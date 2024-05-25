@@ -3,19 +3,14 @@ import { ref } from "../ref.js";
 import { readonly } from "../readonly.js";
 
 /**
- * @template T
- * @typedef {import('@preact/signals').Signal<T>} Signal<T>
- */
-
-/**
  * @param {object} [params]
  * @param {ResizeObserverCallback} [params.onResize]
  * @returns 
  */
 export function resizeObserver({ onResize } = {}) {
-  /** @type {Ref<Element | null>} */
+  /** @type {import('../global.d.ts').Ref<Element | null>} */
   const targetRef = ref();
-  /** @type {Signal<ResizeObserverEntry[]>} */
+  /** @type {import('../global.d.ts').Signal<ResizeObserverEntry[]>} */
   const entries = signal([]);
   const entry = computed(
     () => entries.value.find(({ target }) => target === targetRef.current) || null

@@ -1,6 +1,5 @@
 import { computed, effect, signal } from "@preact/signals-core";
 import { readonly } from "../readonly.js";
-import { ref } from "../ref.js";
 import { eventListener } from "../tools/eventListener.js";
 
 /**
