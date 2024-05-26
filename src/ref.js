@@ -39,7 +39,7 @@ export function forwardedRef(refs) {
   const newRef = createRef();
 
   effect(() => {
-    refs.forEach((ref) => createRef(newRef.current));
+    refs.forEach((ref) => ref(newRef.current));
   });
 
   return newRef;
