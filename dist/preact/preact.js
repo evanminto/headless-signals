@@ -1,5 +1,5 @@
 import {useRef as $ec4qp$useRef, useMemo as $ec4qp$useMemo} from "preact/hooks";
-import {signal as $ec4qp$signal, effect as $ec4qp$effect, computed as $ec4qp$computed} from "@preact/signals-core";
+import {signal as $ec4qp$signal, computed as $ec4qp$computed, effect as $ec4qp$effect} from "@preact/signals-core";
 
 
 function $parcel$exportWildcard(dest, source) {
@@ -105,7 +105,7 @@ function $18e8e14b82c9968b$export$eff4d24c3ff7876e(initialValue) {
     return refFn;
 }
 function $18e8e14b82c9968b$export$3bca459d1b2dcaa8(refs) {
-    /** @type {Ref<T>} */ const newRef = $18e8e14b82c9968b$export$eff4d24c3ff7876e();
+    /** @type {import('./global.d.ts').Ref<T>} */ const newRef = $18e8e14b82c9968b$export$eff4d24c3ff7876e();
     (0, $ec4qp$effect)(()=>{
         refs.forEach((ref)=>ref(newRef.current));
     });
@@ -148,21 +148,20 @@ function $31cbf211212db4a4$export$88238d20aa6c8dd6({ lightDismiss: lightDismiss 
     const { ref: controlRef, end: disposeControl } = (0, $2f63d4d464643d2d$export$f5cdf3809b4587f3)("click", ()=>{
         if (action === "toggle") isOpen.value = !isOpen.value;
     });
-    const { ref: modalEventRef, end: disposeModal } = (0, $2f63d4d464643d2d$export$f5cdf3809b4587f3)("close", ()=>{
+    const { ref: modalRef, end: disposeModal } = (0, $2f63d4d464643d2d$export$f5cdf3809b4587f3)("close", ()=>{
         isOpen.value = false;
     });
-    /** @type {Ref<HTMLDialogElement>} */ // @ts-ignore
-    const modalRef = modalEventRef;
+    const modalEl = (0, $ec4qp$computed)(()=>modalRef.current instanceof HTMLDialogElement ? modalRef.current : null);
     (0, $ec4qp$effect)(()=>{
-        const modal = modalRef.current;
-        if (modal) {
-            if (isOpen.value) modal.showModal();
-            else modal.close();
+        if (modalEl.value) {
+            if (isOpen.value) modalEl.value.showModal();
+            else modalEl.value.close();
         }
     });
     return {
-        modalRef: /** @type {Ref<HTMLDialogElement>} */ modalRef,
-        controlRef: /** @type {Ref<HTMLButtonElement>} */ // @ts-ignore
+        modalRef: /** @type {import('../global.js').Ref<HTMLDialogElement>} */ // @ts-ignore
+        modalRef,
+        controlRef: /** @type {import('../global.js').Ref<HTMLButtonElement>} */ // @ts-ignore
         controlRef,
         isOpen: (0, $0bc857c25723e53f$export$6ec456bd5b7b3c51)(isOpen),
         dispose: ()=>{
@@ -210,6 +209,10 @@ function $d87276b39fcdfd94$export$8b0cb8993e7a9391() {
     const down = (0, $ec4qp$signal)(false);
     const { ref: mousedownRef, end: endMousedown } = (0, $2f63d4d464643d2d$export$f5cdf3809b4587f3)("mousedown", ()=>down.value = true);
     const { ref: mouseupRef, end: endMouseup } = (0, $2f63d4d464643d2d$export$f5cdf3809b4587f3)("mouseup", ()=>down.value = false);
+    const end = ()=>{
+        endMousedown();
+        endMouseup();
+    };
     return {
         /** @type {import('../global.d.ts').Ref<Element>} */ // @ts-ignore
         ref: (0, $18e8e14b82c9968b$export$3bca459d1b2dcaa8)([
@@ -217,10 +220,8 @@ function $d87276b39fcdfd94$export$8b0cb8993e7a9391() {
             mouseupRef
         ]),
         down: (0, $0bc857c25723e53f$export$6ec456bd5b7b3c51)(down),
-        end: ()=>{
-            endMousedown();
-            endMouseup();
-        }
+        end: end,
+        dispose: end
     };
 }
 

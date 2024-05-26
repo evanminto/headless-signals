@@ -22,12 +22,41 @@ Then import in your JavaScript using any of the following styles:
 ```js
 // Contains all exports
 import { clipboard } from '@evanminto/headless-signals';
+
 // Contains only full-featured headless UI components
-import { toggleButton } from '@evanminto/headless-signals/components';
+import {
+  reorderableList,
+  showPassword,
+  toggleButton,
+} from '@evanminto/headless-signals/components';
+
 // Contains only single-responsibility tools/hooks
-import { resizeObserver } from '@evanminto/headless-signals/tools';
+import {
+  activeElement,
+  asyncTask,
+  clipboard,
+  clock,
+  deferred,
+  draggable,
+  droppable,
+  eventListener,
+  focusManagement,
+  focusTrap,
+  keyboardListener,
+  list,
+  mediaQuery,
+  mousedown,
+  mutationObserver,
+  resizeObserver,
+  toggleValue,
+} from '@evanminto/headless-signals/tools';
+
 // Contains Preact bindings for many components/tools
-import { useModalControl } from '@evanminto/headless-signals/preact';
+import {
+  useHeadlessSignals,
+  useModalControl,
+  useReorderableList,
+} from '@evanminto/headless-signals/preact';
 ```
 
 ## Future Plans

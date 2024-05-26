@@ -3,13 +3,13 @@ import { effect, signal } from '@preact/signals-core';
 /**
  * @template T
  * @param {T | undefined} [initialValue]
- * @returns {Ref<T>}
+ * @returns {import('./global.d.ts').Ref<T>}
  */
-export function ref(initialValue) {
+export function createRef(initialValue) {
   const refSignal = signal(initialValue);
 
   /**
-   * @param {T | undefined} value 
+   * @param {T | undefined} value
    * @returns {void}
    */
   const refFn = (value) => {
@@ -25,18 +25,21 @@ export function ref(initialValue) {
   });
 
   return refFn;
-};
+}
+
+/** @deprecated */
+export const ref = createRef;
 
 /**
  * @template T
- * @param {Ref<T>[]} refs
+ * @param {import('./global.d.ts').Ref<T>[]} refs
  */
 export function forwardedRef(refs) {
-  /** @type {Ref<T>} */
-  const newRef = ref();
+  /** @type {import('./global.d.ts').Ref<T>} */
+  const newRef = createRef();
 
   effect(() => {
-    refs.forEach((ref) => ref(newRef.current));
+    refs.forEach((ref) => createRef(newRef.current));
   });
 
   return newRef;

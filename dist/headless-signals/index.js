@@ -52,7 +52,7 @@ function $18e8e14b82c9968b$export$eff4d24c3ff7876e(initialValue) {
     return refFn;
 }
 function $18e8e14b82c9968b$export$3bca459d1b2dcaa8(refs) {
-    /** @type {Ref<T>} */ const newRef = $18e8e14b82c9968b$export$eff4d24c3ff7876e();
+    /** @type {import('./global.d.ts').Ref<T>} */ const newRef = $18e8e14b82c9968b$export$eff4d24c3ff7876e();
     (0, $dxdRC$effect)(()=>{
         refs.forEach((ref)=>ref(newRef.current));
     });
@@ -107,6 +107,10 @@ function $d87276b39fcdfd94$export$8b0cb8993e7a9391() {
     const down = (0, $dxdRC$signal)(false);
     const { ref: mousedownRef, end: endMousedown } = (0, $2f63d4d464643d2d$export$f5cdf3809b4587f3)("mousedown", ()=>down.value = true);
     const { ref: mouseupRef, end: endMouseup } = (0, $2f63d4d464643d2d$export$f5cdf3809b4587f3)("mouseup", ()=>down.value = false);
+    const end = ()=>{
+        endMousedown();
+        endMouseup();
+    };
     return {
         /** @type {import('../global.d.ts').Ref<Element>} */ // @ts-ignore
         ref: (0, $18e8e14b82c9968b$export$3bca459d1b2dcaa8)([
@@ -114,10 +118,8 @@ function $d87276b39fcdfd94$export$8b0cb8993e7a9391() {
             mouseupRef
         ]),
         down: (0, $0bc857c25723e53f$export$6ec456bd5b7b3c51)(down),
-        end: ()=>{
-            endMousedown();
-            endMouseup();
-        }
+        end: end,
+        dispose: end
     };
 }
 
@@ -266,14 +268,13 @@ var $5fa1aef9032e25cb$exports = {};
 $parcel$export($5fa1aef9032e25cb$exports, "showPassword", () => $5fa1aef9032e25cb$export$a7fa1077ed92634a);
 
 
+
 function $5fa1aef9032e25cb$export$a7fa1077ed92634a(show = false) {
-    const visible = (0, $dxdRC$signal)(show);
+    const { on: visible, toggle: toggle } = (0, $5fa1aef9032e25cb$import$aec1c10f85acd250$d67dea09654f2d07)(show);
     return {
         visible: (0, $0bc857c25723e53f$export$6ec456bd5b7b3c51)(visible),
         inputType: (0, $dxdRC$computed)(()=>visible.value ? "text" : "password"),
-        toggle () {
-            visible.value = !visible.value;
-        }
+        toggle: toggle
     };
 }
 
@@ -291,7 +292,7 @@ function $9451e01af4218bca$export$c3f9788a1ddcf2d9(initialIsToggled = false) {
     const el = (0, $dxdRC$computed)(()=>buttonRef.current instanceof HTMLButtonElement ? buttonRef.current : null);
     const dispose = (0, $dxdRC$effect)(()=>el.value?.setAttribute("aria-pressed", ariaPressed.value));
     return {
-        /** @type {Ref<HTMLButtonElement>} */ // @ts-ignore
+        /** @type {import('../global.d.ts').Ref<HTMLButtonElement>} */ // @ts-ignore
         ref: buttonRef,
         isToggled: (0, $0bc857c25723e53f$export$6ec456bd5b7b3c51)(isToggled),
         dispose: dispose
@@ -371,21 +372,20 @@ function $31cbf211212db4a4$export$88238d20aa6c8dd6({ lightDismiss: lightDismiss 
     const { ref: controlRef, end: disposeControl } = (0, $2f63d4d464643d2d$export$f5cdf3809b4587f3)("click", ()=>{
         if (action === "toggle") isOpen.value = !isOpen.value;
     });
-    const { ref: modalEventRef, end: disposeModal } = (0, $2f63d4d464643d2d$export$f5cdf3809b4587f3)("close", ()=>{
+    const { ref: modalRef, end: disposeModal } = (0, $2f63d4d464643d2d$export$f5cdf3809b4587f3)("close", ()=>{
         isOpen.value = false;
     });
-    /** @type {Ref<HTMLDialogElement>} */ // @ts-ignore
-    const modalRef = modalEventRef;
+    const modalEl = (0, $31cbf211212db4a4$import$73969204ac8ec5f9$2983e091f1a1e8e2)(()=>modalRef.current instanceof HTMLDialogElement ? modalRef.current : null);
     (0, $dxdRC$effect)(()=>{
-        const modal = modalRef.current;
-        if (modal) {
-            if (isOpen.value) modal.showModal();
-            else modal.close();
+        if (modalEl.value) {
+            if (isOpen.value) modalEl.value.showModal();
+            else modalEl.value.close();
         }
     });
     return {
-        modalRef: /** @type {Ref<HTMLDialogElement>} */ modalRef,
-        controlRef: /** @type {Ref<HTMLButtonElement>} */ // @ts-ignore
+        modalRef: /** @type {import('../global.js').Ref<HTMLDialogElement>} */ // @ts-ignore
+        modalRef,
+        controlRef: /** @type {import('../global.js').Ref<HTMLButtonElement>} */ // @ts-ignore
         controlRef,
         isOpen: (0, $0bc857c25723e53f$export$6ec456bd5b7b3c51)(isOpen),
         dispose: ()=>{
@@ -484,7 +484,10 @@ $parcel$export($05d79c3404a085c7$exports, "clipboard", () => $05d79c3404a085c7$e
 
 function $05d79c3404a085c7$export$113cec1d2aba8489() {
     const copied = (0, $dxdRC$signal)(false);
-    const copy = (text)=>navigator.clipboard.writeText(text).then(()=>copied.value = true);
+    const copy = async (text)=>{
+        if (!("clipboard" in navigator)) return false;
+        return navigator.clipboard.writeText(text).then(()=>copied.value = true);
+    };
     return {
         copied: (0, $0bc857c25723e53f$export$6ec456bd5b7b3c51)(copied),
         copy: copy
@@ -512,9 +515,9 @@ $parcel$export($4f3101b9a0d6a2c5$exports, "deferred", () => $4f3101b9a0d6a2c5$ex
 
 
 function $4f3101b9a0d6a2c5$export$b37aab7cecdd910a(promise) {
-    /** @type {import('../global.d.ts').Signal<T | undefined>} */ const value = (0, $dxdRC$signal)(undefined);
+    /** @type {import('../global.d.ts').Signal<T | null>} */ const value = (0, $dxdRC$signal)(null);
     const isPending = (0, $dxdRC$signal)(true);
-    /** @type {import('../global.d.ts').Signal<Error | undefined>} */ const error = (0, $dxdRC$signal)(undefined);
+    /** @type {import('../global.d.ts').Signal<Error | null>} */ const error = (0, $dxdRC$signal)(null);
     promise.then((v)=>{
         value.value = v;
         isPending.value = false;
@@ -555,6 +558,7 @@ $parcel$export($0b19bbc991536fce$exports, "focusTrap", () => $0b19bbc991536fce$e
 
 
 
+
 function $0b19bbc991536fce$export$8c303353eaec6a02(trapped) {
     /** @param {Element} element */ function trapFocus(element) {
         /** @type {NodeListOf<HTMLElement>} */ const focusableEls = element.querySelectorAll('a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])');
@@ -562,11 +566,11 @@ function $0b19bbc991536fce$export$8c303353eaec6a02(trapped) {
         const lastFocusableEl = focusableEls[focusableEls.length - 1];
         const KEYCODE_TAB = 9;
         /**
-     * @param {KeyboardEvent} e 
+     * @param {KeyboardEvent} e
      */ const listener = (e)=>{
             const isTabPressed = e.key === "Tab" || e.keyCode === KEYCODE_TAB;
             if (!isTabPressed) return;
-            if (e.shiftKey) {
+            if (e.shiftKey) /* shift + tab */ {
                 if (document.activeElement === firstFocusableEl) {
                     lastFocusableEl.focus();
                     e.preventDefault();
@@ -581,13 +585,13 @@ function $0b19bbc991536fce$export$8c303353eaec6a02(trapped) {
         return listener;
     }
     /**
-   * @param {EventTarget} element 
-   * @param {(event: KeyboardEvent) => void} listener 
+   * @param {EventTarget} element
+   * @param {(event: KeyboardEvent) => void} listener
    */ function untrapFocus(element, listener) {
         // @ts-ignore
         element.removeEventListener("keydown", listener);
     }
-    const trappedSignal = (0, $dxdRC$signal)(Boolean(trapped));
+    const { on: trappedSignal, toggle: toggle } = (0, $0b19bbc991536fce$import$bd65649bfdda4680$d67dea09654f2d07)(Boolean(trapped));
     /** @type {import('../global.d.ts').Ref<Element>} */ const targetRef = (0, $18e8e14b82c9968b$export$eff4d24c3ff7876e)();
     (0, $dxdRC$effect)(()=>{
         if (!trappedSignal.value) return;
@@ -600,7 +604,7 @@ function $0b19bbc991536fce$export$8c303353eaec6a02(trapped) {
     return {
         trapped: (0, $0bc857c25723e53f$export$6ec456bd5b7b3c51)(trappedSignal),
         ref: targetRef,
-        toggle: ()=>trappedSignal.value = !trappedSignal.value
+        toggle: toggle
     };
 }
 
@@ -608,6 +612,7 @@ function $0b19bbc991536fce$export$8c303353eaec6a02(trapped) {
 var $a1b6e24ee0215186$exports = {};
 
 $parcel$export($a1b6e24ee0215186$exports, "keyboardListener", () => $a1b6e24ee0215186$export$dc44f0e8d963cd3c);
+
 
 
 
@@ -620,7 +625,7 @@ function $a1b6e24ee0215186$export$dc44f0e8d963cd3c() {
     const isFocusedOnTarget = (0, $dxdRC$computed)(()=>targetRef.current?.contains(activeEl.value) || targetRef.current === activeEl.value);
     const isListening = (0, $dxdRC$computed)(()=>isListeningToAll.value || isFocusedOnTarget.value);
     const end = (0, $dxdRC$effect)(()=>kbTargetRef(isListening.value ? window : undefined));
-    return {
+    return (0, $a1b6e24ee0215186$import$7dcc80e9ee811ae2$9b62055e7f421a1c)({
         ref: targetRef,
         event: event,
         end: ()=>{
@@ -628,8 +633,9 @@ function $a1b6e24ee0215186$export$dc44f0e8d963cd3c() {
             endActive();
             end();
         }
-    };
+    });
 }
+
 
 
 var $b7a166374b21d904$exports = {};
@@ -637,14 +643,37 @@ var $b7a166374b21d904$exports = {};
 $parcel$export($b7a166374b21d904$exports, "mediaQuery", () => $b7a166374b21d904$export$8f880b6e390052fa);
 
 
+/**
+ * @template {{ end: () => void }} T
+ * @param {T} obj
+ * @returns {T & { dispose: T['end'] }}
+ */ function $33c5b6b1dfd8e902$export$9b62055e7f421a1c(obj) {
+    return {
+        ...obj,
+        dispose: obj.end
+    };
+}
+
+
+/**
+ * @param {any} obj
+ * @returns {obj is MediaQueryList}
+ */ function $b7a166374b21d904$var$isMqList(obj) {
+    return obj && "matches" in obj && "media" in obj;
+}
 function $b7a166374b21d904$export$8f880b6e390052fa(query) {
     const { targetRef: targetRef, event: event, end: end } = (0, $2f63d4d464643d2d$export$f5cdf3809b4587f3)("change");
     targetRef(window.matchMedia(query));
-    return {
+    const mqList = (0, $dxdRC$computed)(()=>$b7a166374b21d904$var$isMqList(targetRef.current) ? targetRef.current : null);
+    return (0, $33c5b6b1dfd8e902$export$9b62055e7f421a1c)({
         event: event,
-        matches: (0, $dxdRC$computed)(()=>Boolean(event.value?.matches)),
-        end: end
-    };
+        matches: (0, $dxdRC$computed)(()=>{
+            console.log(mqList.value);
+            return Boolean(event.value ? event.value?.matches : mqList.value?.matches);
+        }),
+        end: end,
+        dispose: end
+    });
 }
 
 
@@ -670,7 +699,8 @@ function $599007d3565e6aff$export$dacecbef73d30765({ options: options, onMutatio
         ref: targetRef,
         records: (0, $0bc857c25723e53f$export$6ec456bd5b7b3c51)(recordsSignal),
         observer: (0, $dxdRC$computed)(()=>observer),
-        end: endEffect
+        end: endEffect,
+        dispose: endEffect
     };
 }
 
@@ -704,6 +734,25 @@ function $1d883743ee44f860$export$b13421f1ae71d316({ onResize: onResize } = {}) 
 }
 
 
+
+$parcel$exportWildcard($d2866cf3dec74024$exports, $371ae1aee0602620$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $d79cf8bc85ac70a0$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $05d79c3404a085c7$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $310867d6fcbb7326$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $4f3101b9a0d6a2c5$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $d35fc60e7f4dc40d$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $2f63d4d464643d2d$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $ba88d93035145985$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $0b19bbc991536fce$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $a1b6e24ee0215186$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $b7a166374b21d904$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $d87276b39fcdfd94$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $599007d3565e6aff$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $1d883743ee44f860$exports);
+$parcel$exportWildcard($d2866cf3dec74024$exports, $5f1a496cb3a2d1ba$exports);
+
+
+
 var $5f1a496cb3a2d1ba$exports = {};
 
 $parcel$export($5f1a496cb3a2d1ba$exports, "viewTransition", () => $5f1a496cb3a2d1ba$export$5ddfeb5596fe32a4);
@@ -729,25 +778,6 @@ $parcel$export($5f1a496cb3a2d1ba$exports, "viewTransition", () => $5f1a496cb3a2d
         callback: doTransition
     };
 }
-
-
-$parcel$exportWildcard($d2866cf3dec74024$exports, $371ae1aee0602620$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $d79cf8bc85ac70a0$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $05d79c3404a085c7$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $310867d6fcbb7326$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $4f3101b9a0d6a2c5$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $d35fc60e7f4dc40d$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $2f63d4d464643d2d$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $ba88d93035145985$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $0b19bbc991536fce$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $a1b6e24ee0215186$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $b7a166374b21d904$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $d87276b39fcdfd94$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $599007d3565e6aff$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $1d883743ee44f860$exports);
-$parcel$exportWildcard($d2866cf3dec74024$exports, $5f1a496cb3a2d1ba$exports);
-
-
 
 
 export {$9be4f47e7377fcd6$export$3477e6bdf0907486 as reorderableList, $5fa1aef9032e25cb$export$a7fa1077ed92634a as showPassword, $9451e01af4218bca$export$c3f9788a1ddcf2d9 as toggleButton, $963a274682f2cae3$export$7a9439f340ec21a2 as useHeadlessSignals, $39cf0b723e8230b3$export$cac7fc757a3cbc77 as useModalControl, $63092c146363d68e$export$4fd830fb61035e6b as useReorderableList, $371ae1aee0602620$export$da980962bd2147a4 as activeElement, $d79cf8bc85ac70a0$export$e37f1a3c63660c89 as asyncTask, $05d79c3404a085c7$export$113cec1d2aba8489 as clipboard, $310867d6fcbb7326$export$8c9e255416017e56 as clock, $4f3101b9a0d6a2c5$export$b37aab7cecdd910a as deferred, $d35fc60e7f4dc40d$export$c746a5152d4ba26c as draggable, $d35fc60e7f4dc40d$export$c4e9c468fa5fa70a as droppable, $2f63d4d464643d2d$export$f5cdf3809b4587f3 as eventListener, $ba88d93035145985$export$61b2bcee224da220 as focusManagement, $0b19bbc991536fce$export$8c303353eaec6a02 as focusTrap, $a1b6e24ee0215186$export$dc44f0e8d963cd3c as keyboardListener, $b7a166374b21d904$export$8f880b6e390052fa as mediaQuery, $d87276b39fcdfd94$export$8b0cb8993e7a9391 as mousedown, $599007d3565e6aff$export$dacecbef73d30765 as mutationObserver, $1d883743ee44f860$export$b13421f1ae71d316 as resizeObserver, $5f1a496cb3a2d1ba$export$5ddfeb5596fe32a4 as viewTransition};

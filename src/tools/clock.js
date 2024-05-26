@@ -1,4 +1,4 @@
-import { signal } from "@preact/signals-core";
+import { signal } from '@preact/signals-core';
 
 /**
  * @param {object} [params]
@@ -6,7 +6,7 @@ import { signal } from "@preact/signals-core";
  */
 export function clock({ interval = 1000 } = {}) {
   const date = signal(new Date());
-  const intervalId = setInterval(() => date.value = new Date(), interval);
+  const intervalId = setInterval(() => (date.value = new Date()), interval);
 
   return {
     date,

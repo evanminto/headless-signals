@@ -1,39 +1,41 @@
-import { effect, signal } from "@preact/signals-core";
-import { eventListener } from "../tools/eventListener.js";
-import { readonly } from "../readonly.js";
+import { computed, effect, signal } from '@preact/signals-core';
+import { eventListener } from '../tools/eventListener.js';
+import { readonly } from '../readonly.js';
 
 export function modalControl({ lightDismiss = false, action = 'toggle' } = {}) {
   const isOpen = signal(false);
-  const { ref: controlRef, end: disposeControl } = eventListener('click', () => {
-    if (action === 'toggle') {
-      isOpen.value = !isOpen.value;
-    }
-  });
+  const { ref: controlRef, end: disposeControl } = eventListener(
+    'click',
+    () => {
+      if (action === 'toggle') {
+        isOpen.value = !isOpen.value;
+      }
+    },
+  );
 
-  const { ref: modalEventRef, end: disposeModal } = eventListener('close', () => {
+  const { ref: modalRef, end: disposeModal } = eventListener('close', () => {
     isOpen.value = false;
   });
 
-  /** @type {Ref<HTMLDialogElement>} */
-  // @ts-ignore
-  const modalRef = modalEventRef;
+  const modalEl = computed(() =>
+    modalRef.current instanceof HTMLDialogElement ? modalRef.current : null,
+  );
 
   effect(() => {
-    const modal = modalRef.current;
-
-    if (modal) {
+    if (modalEl.value) {
       if (isOpen.value) {
-        modal.showModal();
+        modalEl.value.showModal();
       } else {
-        modal.close();
+        modalEl.value.close();
       }
     }
   });
-  
+
   return {
-    /** @type {Ref<HTMLDialogElement>} */
+    /** @type {import('../global.js').Ref<HTMLDialogElement>} */
+    // @ts-ignore
     modalRef,
-    /** @type {Ref<HTMLButtonElement>} */
+    /** @type {import('../global.js').Ref<HTMLButtonElement>} */
     // @ts-ignore
     controlRef,
     isOpen: readonly(isOpen),

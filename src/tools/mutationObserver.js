@@ -1,6 +1,6 @@
-import { computed, effect, signal } from "@preact/signals-core";
-import { readonly } from "../readonly.js";
-import { ref } from "../ref.js";
+import { computed, effect, signal } from '@preact/signals-core';
+import { readonly } from '../readonly.js';
+import { ref } from '../ref.js';
 
 /**
  * @param {object} [params]
@@ -17,7 +17,7 @@ export function mutationObserver({ options, onMutation } = {}) {
     recordsSignal.value = records;
     onMutation?.(records, obs);
   });
-  
+
   const endEffect = effect(() => {
     if (targetRef.current) {
       observer.observe(targetRef.current, options);
@@ -31,5 +31,6 @@ export function mutationObserver({ options, onMutation } = {}) {
     records: readonly(recordsSignal),
     observer: computed(() => observer),
     end: endEffect,
+    dispose: endEffect,
   };
 }

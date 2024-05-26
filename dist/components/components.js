@@ -51,7 +51,7 @@ function $18e8e14b82c9968b$export$eff4d24c3ff7876e(initialValue) {
     return refFn;
 }
 function $18e8e14b82c9968b$export$3bca459d1b2dcaa8(refs) {
-    /** @type {Ref<T>} */ const newRef = $18e8e14b82c9968b$export$eff4d24c3ff7876e();
+    /** @type {import('./global.d.ts').Ref<T>} */ const newRef = $18e8e14b82c9968b$export$eff4d24c3ff7876e();
     (0, $iEt1P$effect)(()=>{
         refs.forEach((ref)=>ref(newRef.current));
     });
@@ -106,6 +106,10 @@ function $d87276b39fcdfd94$export$8b0cb8993e7a9391() {
     const down = (0, $iEt1P$signal)(false);
     const { ref: mousedownRef, end: endMousedown } = (0, $2f63d4d464643d2d$export$f5cdf3809b4587f3)("mousedown", ()=>down.value = true);
     const { ref: mouseupRef, end: endMouseup } = (0, $2f63d4d464643d2d$export$f5cdf3809b4587f3)("mouseup", ()=>down.value = false);
+    const end = ()=>{
+        endMousedown();
+        endMouseup();
+    };
     return {
         /** @type {import('../global.d.ts').Ref<Element>} */ // @ts-ignore
         ref: (0, $18e8e14b82c9968b$export$3bca459d1b2dcaa8)([
@@ -113,10 +117,8 @@ function $d87276b39fcdfd94$export$8b0cb8993e7a9391() {
             mouseupRef
         ]),
         down: (0, $0bc857c25723e53f$export$6ec456bd5b7b3c51)(down),
-        end: ()=>{
-            endMousedown();
-            endMouseup();
-        }
+        end: end,
+        dispose: end
     };
 }
 
@@ -265,14 +267,28 @@ var $5fa1aef9032e25cb$exports = {};
 $parcel$export($5fa1aef9032e25cb$exports, "showPassword", () => $5fa1aef9032e25cb$export$a7fa1077ed92634a);
 
 
+var $1ea663d0d7bbbda8$exports = {};
+
+$parcel$export($1ea663d0d7bbbda8$exports, "toggleValue", () => $1ea663d0d7bbbda8$export$d67dea09654f2d07);
+
+
+function $1ea663d0d7bbbda8$export$d67dea09654f2d07(initialOn = false) {
+    const on = (0, $iEt1P$signal)(initialOn);
+    return {
+        on: (0, $0bc857c25723e53f$export$6ec456bd5b7b3c51)(on),
+        toggle () {
+            on.value = !on.value;
+        }
+    };
+}
+
+
 function $5fa1aef9032e25cb$export$a7fa1077ed92634a(show = false) {
-    const visible = (0, $iEt1P$signal)(show);
+    const { on: visible, toggle: toggle } = (0, $1ea663d0d7bbbda8$export$d67dea09654f2d07)(show);
     return {
         visible: (0, $0bc857c25723e53f$export$6ec456bd5b7b3c51)(visible),
         inputType: (0, $iEt1P$computed)(()=>visible.value ? "text" : "password"),
-        toggle () {
-            visible.value = !visible.value;
-        }
+        toggle: toggle
     };
 }
 
@@ -290,7 +306,7 @@ function $9451e01af4218bca$export$c3f9788a1ddcf2d9(initialIsToggled = false) {
     const el = (0, $iEt1P$computed)(()=>buttonRef.current instanceof HTMLButtonElement ? buttonRef.current : null);
     const dispose = (0, $iEt1P$effect)(()=>el.value?.setAttribute("aria-pressed", ariaPressed.value));
     return {
-        /** @type {Ref<HTMLButtonElement>} */ // @ts-ignore
+        /** @type {import('../global.d.ts').Ref<HTMLButtonElement>} */ // @ts-ignore
         ref: buttonRef,
         isToggled: (0, $0bc857c25723e53f$export$6ec456bd5b7b3c51)(isToggled),
         dispose: dispose

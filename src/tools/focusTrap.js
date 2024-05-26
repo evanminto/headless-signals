@@ -1,40 +1,43 @@
-import { computed, effect, signal } from "@preact/signals-core";
-import { readonly } from "../readonly.js";
-import { ref } from "../ref.js";
+import { effect } from '@preact/signals-core';
+import { readonly } from '../readonly.js';
+import { createRef } from '../ref.js';
+import { toggleValue } from './toggleValue.js';
 
 /** @param {boolean} [trapped] */
 export function focusTrap(trapped) {
   /** @param {Element} element */
   function trapFocus(element) {
     /** @type {NodeListOf<HTMLElement>} */
-    const focusableEls = element.querySelectorAll('a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])');
+    const focusableEls = element.querySelectorAll(
+      'a[href]:not([disabled]), button:not([disabled]), textarea:not([disabled]), input[type="text"]:not([disabled]), input[type="radio"]:not([disabled]), input[type="checkbox"]:not([disabled]), select:not([disabled])',
+    );
     const firstFocusableEl = focusableEls[0];
     const lastFocusableEl = focusableEls[focusableEls.length - 1];
     const KEYCODE_TAB = 9;
 
     /**
-     * @param {KeyboardEvent} e 
+     * @param {KeyboardEvent} e
      */
     const listener = (e) => {
-      const isTabPressed = (e.key === 'Tab' || e.keyCode === KEYCODE_TAB);
-  
-      if (!isTabPressed) { 
-        return; 
+      const isTabPressed = e.key === 'Tab' || e.keyCode === KEYCODE_TAB;
+
+      if (!isTabPressed) {
+        return;
       }
-  
-      if (e.shiftKey) /* shift + tab */ {
-        if (document.activeElement === firstFocusableEl) {
+
+      if (e.shiftKey) {
+        /* shift + tab */ if (document.activeElement === firstFocusableEl) {
           lastFocusableEl.focus();
-            e.preventDefault();
-          }
-        } else /* tab */ {
+          e.preventDefault();
+        }
+      } /* tab */ else {
         if (document.activeElement === lastFocusableEl) {
           firstFocusableEl.focus();
-            e.preventDefault();
-          }
+          e.preventDefault();
         }
+      }
     };
-  
+
     // @ts-ignore
     element.addEventListener('keydown', listener);
 
@@ -42,17 +45,17 @@ export function focusTrap(trapped) {
   }
 
   /**
-   * @param {EventTarget} element 
-   * @param {(event: KeyboardEvent) => void} listener 
+   * @param {EventTarget} element
+   * @param {(event: KeyboardEvent) => void} listener
    */
   function untrapFocus(element, listener) {
     // @ts-ignore
     element.removeEventListener('keydown', listener);
   }
 
-  const trappedSignal = signal(Boolean(trapped));
+  const { on: trappedSignal, toggle } = toggleValue(Boolean(trapped));
   /** @type {import('../global.d.ts').Ref<Element>} */
-  const targetRef = ref();
+  const targetRef = createRef();
 
   effect(() => {
     if (!trappedSignal.value) {
@@ -71,6 +74,6 @@ export function focusTrap(trapped) {
   return {
     trapped: readonly(trappedSignal),
     ref: targetRef,
-    toggle: () => trappedSignal.value = !trappedSignal.value,
+    toggle,
   };
 }
