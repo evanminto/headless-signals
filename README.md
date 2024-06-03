@@ -34,6 +34,7 @@ import {
 import {
   activeElement,
   asyncTask,
+  cache,
   clipboard,
   clock,
   deferred,

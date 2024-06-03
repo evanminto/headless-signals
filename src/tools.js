@@ -1,5 +1,6 @@
 export * from './tools/activeElement.js';
 export * from './tools/asyncTask.js';
+export * from './tools/cache.js';
 export * from './tools/clipboard.js';
 export * from './tools/clock.js';
 export * from './tools/deferred.js';
