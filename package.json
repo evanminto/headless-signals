@@ -8,15 +8,27 @@
   "author": "Evan Minto <evan.minto@gmail.com>",
   "license": "MIT",
   "exports": {
-    ".": "./src/index.js",
-    "./components": "./src/components.js",
-    "./tools": "./src/tools.js",
-    "./preact": "./src/preact.js"
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./components": {
+      "types": "./types/components.d.ts",
+      "default": "./src/components.js"
+    },
+    "./tools": {
+      "types": "./types/tools.d.ts",
+      "default": "./src/tools.js"
+    },
+    "./preact": {
+      "types": "./types/preact.d.ts",
+      "default": "./src/preact.js"
+    }
   },
   "scripts": {
     "start": "parcel watch",
     "build:src": "parcel build",
-    "build:types": "tsc src/index.js --allowJs --declaration --emitDeclarationOnly --declarationDir dist",
+    "build:types": "tsc src/index.js --allowJs --declaration --emitDeclarationOnly --declarationDir types",
     "build": "yarn run build:src && yarn run build:types",
     "demo:preact": "parcel serve ./demo/preact/index.html",
     "test": "vitest"

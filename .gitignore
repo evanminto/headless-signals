@@ -132,3 +132,4 @@ out
 # Build
 .parcel-cache
 dist
+types
