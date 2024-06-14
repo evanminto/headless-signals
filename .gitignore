@@ -131,4 +131,4 @@ out
 
 # Build
 .parcel-cache
-dist/index.*
+dist

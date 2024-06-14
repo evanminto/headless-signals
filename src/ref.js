@@ -2,8 +2,16 @@ import { effect, signal } from '@preact/signals-core';
 
 /**
  * @template T
+ * @typedef {{
+ *   (value: T | undefined): void;
+ *   readonly current: T | undefined;
+ * }} Ref<T>
+ */
+
+/**
+ * @template T
  * @param {T | undefined} [initialValue]
- * @returns {import('./global.d.ts').Ref<T>}
+ * @returns {Ref<T>}
  */
 export function createRef(initialValue) {
   const refSignal = signal(initialValue);
@@ -32,10 +40,10 @@ export const ref = createRef;
 
 /**
  * @template T
- * @param {import('./global.d.ts').Ref<T>[]} refs
+ * @param {Ref<T>[]} refs
  */
 export function forwardedRef(refs) {
-  /** @type {import('./global.d.ts').Ref<T>} */
+  /** @type {Ref<T>} */
   const newRef = createRef();
 
   effect(() => {
