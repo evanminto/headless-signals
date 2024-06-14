@@ -10,7 +10,7 @@ import createPromiseWithResolvers from '../helpers/createPromiseWithResolvers.js
 /**
  * @template T
  * @typedef {{
- *   data: ReadonlySignal<Data>;
+ *   data: ReadonlySignal<T>;
  *   isLoading: ReadonlySignal<boolean>;
  *   completed: ReadonlySignal<Promise<void>>;
  *   run: () => void;
