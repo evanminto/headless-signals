@@ -8,10 +8,10 @@
   "author": "Evan Minto <evan.minto@gmail.com>",
   "license": "MIT",
   "exports": {
-    ".": "./dist/headless-signals/index.js",
-    "./components": "./dist/components/components.js",
-    "./tools": "./dist/tools/tools.js",
-    "./preact": "./dist/preact/preact.js"
+    ".": "./dist/index.js",
+    "./components": "./dist/components.js",
+    "./tools": "./dist/tools.js",
+    "./preact": "./dist/preact.js"
   },
   "scripts": {
     "start": "parcel watch",
@@ -35,21 +35,24 @@
       "isLibrary": true,
       "outputFormat": "esmodule",
       "context": "browser",
-      "includeNodeModules": false
+      "includeNodeModules": false,
+      "distDir": "./dist/"
     },
     "tools": {
       "source": "./src/tools.js",
       "isLibrary": true,
       "outputFormat": "esmodule",
       "context": "browser",
-      "includeNodeModules": false
+      "includeNodeModules": false,
+      "distDir": "./dist/"
     },
     "preact": {
       "source": "./src/preact.js",
       "isLibrary": true,
       "outputFormat": "esmodule",
       "context": "browser",
-      "includeNodeModules": false
+      "includeNodeModules": false,
+      "distDir": "./dist/"
     }
   },
   "dependencies": {
