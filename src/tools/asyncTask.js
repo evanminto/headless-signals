@@ -13,6 +13,7 @@ import createPromiseWithResolvers from '../helpers/createPromiseWithResolvers.js
  *   data: ReadonlySignal<T>;
  *   isLoading: ReadonlySignal<boolean>;
  *   completed: ReadonlySignal<Promise<void>>;
+ *   error: ReadonlySignal<Error | null>;
  *   run: () => void;
  *   end: () => void;
  *   dispose: () => void;
@@ -31,6 +32,8 @@ export function asyncTask(taskFn, getDeps = () => {}, { autoRun = true } = {}) {
   /** @type {Signal<Data | null>} */
   const data = signal(null);
   const isLoading = signal(false);
+  /** @type {Signal<Error | null>} */
+  const error = signal(null);
   const completed = signal(
     /** @type {typeof createPromiseWithResolvers<Data>} */ (
       createPromiseWithResolvers
@@ -60,6 +63,7 @@ export function asyncTask(taskFn, getDeps = () => {}, { autoRun = true } = {}) {
     data: readonly(data),
     isLoading: readonly(isLoading),
     completed: computed(() => completed.value.promise),
+    error: readonly(error),
     run,
     /** @deprecated */
     end: dispose,
