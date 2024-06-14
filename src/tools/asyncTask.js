@@ -8,12 +8,12 @@ import createPromiseWithResolvers from '../helpers/createPromiseWithResolvers.js
  */
 
 /**
- * @preserve
- * @template Dependency
  * @template Data
- * @param {(dep?: Dependency | void) => Promise<Data> | Data} taskFn
- * @param {() => Dependency | void} getDeps
+ * @template Dependency
+ * @param {(dep: Dependency) => Promise<Data> | Data} taskFn
+ * @param {() => Dependency} [getDeps]
  * @param {{ autoRun?: boolean }} [options]
+ * @returns {import('./types.d.ts').AsyncTaskResult<Data>}
  */
 export function asyncTask(taskFn, getDeps = () => {}, { autoRun = true } = {}) {
   /** @type {Signal<Data | null>} */
