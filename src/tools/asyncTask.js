@@ -1,31 +1,56 @@
 import { computed, effect, signal } from '@preact/signals-core';
 import { readonly } from '../readonly.js';
+import createPromiseWithResolvers from '../helpers/createPromiseWithResolvers.js';
 
 /**
+ * @template T
+ * @typedef {import('@preact/signals-core').Signal<T>} Signal<T>
+ */
+
+/**
+ * @preserve
  * @template Dependency
  * @template Data
- * @param {(dep?: Dependency | void) => Promise<Data> | Data} taskFn 
- * @param {() => Dependency | void} getDeps 
+ * @param {(dep?: Dependency | void) => Promise<Data> | Data} taskFn
+ * @param {() => Dependency | void} getDeps
  * @param {{ autoRun?: boolean }} [options]
  */
 export function asyncTask(taskFn, getDeps = () => {}, { autoRun = true } = {}) {
-  /** @type {import('../global.d.ts').Signal<Data | null>} */
+  /** @type {Signal<Data | null>} */
   const data = signal(null);
   const isLoading = signal(false);
+  const completed = signal(
+    /** @type {typeof createPromiseWithResolvers<Data>} */ (
+      createPromiseWithResolvers
+    )(),
+  );
   const deps = computed(getDeps);
 
   const run = async () => {
     isLoading.value = true;
-    data.value = await taskFn(deps.value);
+
+    try {
+      data.value = await taskFn(deps.value);
+      completed.value = /** @type {typeof createPromiseWithResolvers<Data>} */ (
+        createPromiseWithResolvers
+      )();
+      completed.value.resolve(data.value);
+    } catch (error) {
+      completed.value.reject(error);
+    }
+
     isLoading.value = false;
   };
 
-  const end = autoRun ? effect(run) : () => {};
+  const dispose = autoRun ? effect(run) : () => {};
 
   return {
     data: readonly(data),
     isLoading: readonly(isLoading),
+    completed: computed(() => completed.value.promise),
     run,
-    end,
+    /** @deprecated */
+    end: dispose,
+    dispose,
   };
 }
