@@ -27,8 +27,9 @@
   },
   "scripts": {
     "start": "parcel watch",
+    "copy:types": "cp src/global.d.ts types",
     "build:src": "parcel build",
-    "build:types": "tsc src/index.js --allowJs --declaration --emitDeclarationOnly --declarationDir types",
+    "build:types": "tsc && yarn run copy:types",
     "build": "yarn run build:src && yarn run build:types",
     "demo:preact": "parcel serve ./demo/preact/index.html",
     "test": "vitest"

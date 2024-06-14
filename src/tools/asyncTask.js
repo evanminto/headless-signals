@@ -8,12 +8,24 @@ import createPromiseWithResolvers from '../helpers/createPromiseWithResolvers.js
  */
 
 /**
+ * @template T
+ * @typedef {{
+ *   data: ReadonlySignal<Data>;
+ *   isLoading: ReadonlySignal<boolean>;
+ *   completed: ReadonlySignal<Promise<void>>;
+ *   run: () => void;
+ *   end: () => void;
+ *   dispose: () => void;
+ * }} AsyncTaskResult<T>
+ */
+
+/**
  * @template Data
  * @template Dependency
  * @param {(dep: Dependency) => Promise<Data> | Data} taskFn
  * @param {() => Dependency} [getDeps]
  * @param {{ autoRun?: boolean }} [options]
- * @returns {import('./types.d.ts').AsyncTaskResult<Data>}
+ * @returns {AsyncTaskResult<Data>}
  */
 export function asyncTask(taskFn, getDeps = () => {}, { autoRun = true } = {}) {
   /** @type {Signal<Data | null>} */
