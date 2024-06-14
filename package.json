@@ -2,16 +2,16 @@
   "name": "@evanminto/headless-signals",
   "description": "Experimental collection of headless components/hooks, implemented with Preact Signals",
   "version": "0.4.2",
-  "main": "./dist/headless-signals/index.js",
+  "main": "./src/index.js",
   "type": "module",
   "repository": "git@github.com:evanminto/headless-signals.git",
   "author": "Evan Minto <evan.minto@gmail.com>",
   "license": "MIT",
   "exports": {
-    ".": "./dist/index.js",
-    "./components": "./dist/components.js",
-    "./tools": "./dist/tools.js",
-    "./preact": "./dist/preact.js"
+    ".": "./src/index.js",
+    "./components": "./src/components.js",
+    "./tools": "./src/tools.js",
+    "./preact": "./src/preact.js"
   },
   "scripts": {
     "start": "parcel watch",
