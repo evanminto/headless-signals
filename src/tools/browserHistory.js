@@ -2,7 +2,7 @@ import { signal } from '@preact/signals-core';
 import { readonly } from '../readonly.js';
 import { eventListener } from './eventListener.js';
 
-export default function browserHistory() {
+export function browserHistory() {
   /** @type {Signal<any>} */
   const state = signal(null);
   const title = signal(document.title);
