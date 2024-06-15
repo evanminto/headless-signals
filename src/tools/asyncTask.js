@@ -8,47 +8,34 @@ import createPromiseWithResolvers from '../helpers/createPromiseWithResolvers.js
  */
 
 /**
- * @template T
- * @typedef {{
- *   data: ReadonlySignal<T>;
- *   isLoading: ReadonlySignal<boolean>;
- *   completed: ReadonlySignal<Promise<void>>;
- *   error: ReadonlySignal<Error | null>;
- *   run: () => void;
- *   end: () => void;
- *   dispose: () => void;
- * }} AsyncTaskResult<T>
- */
-
-/**
  * @template Data
  * @template Dependency
  * @param {(dep: Dependency) => Promise<Data> | Data} taskFn
  * @param {() => Dependency} [getDeps]
  * @param {{ autoRun?: boolean }} [options]
- * @returns {AsyncTaskResult<Data>}
  */
 export function asyncTask(taskFn, getDeps = () => {}, { autoRun = true } = {}) {
+  const typedCreatePromise =
+    /** @type {typeof createPromiseWithResolvers<Data>} */ (
+      createPromiseWithResolvers
+    );
+
   /** @type {Signal<Data | null>} */
   const data = signal(null);
   const isLoading = signal(false);
   /** @type {Signal<Error | null>} */
   const error = signal(null);
-  const completed = signal(
-    /** @type {typeof createPromiseWithResolvers<Data>} */ (
-      createPromiseWithResolvers
-    )(),
-  );
+  const completed = signal(typedCreatePromise());
   const deps = computed(getDeps);
 
   const run = async () => {
     isLoading.value = true;
 
     try {
+      // Create a new promise
+      completed.value = typedCreatePromise();
+
       data.value = await taskFn(deps.value);
-      completed.value = /** @type {typeof createPromiseWithResolvers<Data>} */ (
-        createPromiseWithResolvers
-      )();
       completed.value.resolve(data.value);
     } catch (error) {
       completed.value.reject(error);
