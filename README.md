@@ -34,6 +34,7 @@ import {
 import {
   activeElement,
   asyncTask,
+  browserHistory,
   cache,
   clipboard,
   clock,

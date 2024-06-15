@@ -24,6 +24,7 @@ export type EventNameToTypeMap = {
   mousedown: PointerEvent;
   mouseup: PointerEvent;
   close: Event;
+  popstate: PopStateEvent;
 };
 
 export type EventName = keyof EventNameToTypeMap;
