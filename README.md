@@ -47,7 +47,7 @@ import {
   focusTrap,
   keyboardListener,
   list,
-  liveSelector,
+  liveSelectors,
   mediaQuery,
   mousedown,
   mutationObserver,
