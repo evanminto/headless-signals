@@ -1,4 +1,5 @@
 export * from './tools/activeElement.js';
+export * from './tools/applyProps.js';
 export * from './tools/asyncTask.js';
 export * from './tools/browserHistory.js';
 export * from './tools/cache.js';

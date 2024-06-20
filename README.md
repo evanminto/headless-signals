@@ -33,6 +33,7 @@ import {
 // Contains only single-responsibility tools/hooks
 import {
   activeElement,
+  applyProps,
   asyncTask,
   browserHistory,
   cache,
@@ -46,6 +47,7 @@ import {
   focusTrap,
   keyboardListener,
   list,
+  liveSelector,
   mediaQuery,
   mousedown,
   mutationObserver,
