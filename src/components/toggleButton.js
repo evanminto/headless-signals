@@ -10,6 +10,8 @@ export function toggleButton(initialIsToggled = false) {
     'click',
     () => (isToggled.value = !isToggled.value),
   );
+  /** @type {import('../ref.js').Ref<HTMLButtonElement>} */
+  const typedButtonRef = buttonRef;
   const isToggled = signal(initialIsToggled);
   const ariaPressed = computed(() => (isToggled.value ? 'true' : 'false'));
   const el = computed(() =>
@@ -20,9 +22,7 @@ export function toggleButton(initialIsToggled = false) {
   );
 
   return {
-    /** @type {import('../global.d.ts').Ref<HTMLButtonElement>} */
-    // @ts-ignore
-    ref: buttonRef,
+    ref: typedButtonRef,
     isToggled: readonly(isToggled),
     dispose,
   };

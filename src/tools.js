@@ -11,6 +11,7 @@ export * from './tools/focusManagement.js';
 export * from './tools/focusTrap.js';
 export * from './tools/keyboardListener.js';
 export * from './tools/list.js';
+export * from './tools/liveSelector.js';
 export * from './tools/mediaQuery.js';
 export * from './tools/mousedown.js';
 export * from './tools/mutationObserver.js';
