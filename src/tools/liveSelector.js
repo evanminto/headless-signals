@@ -3,14 +3,16 @@ import { mutationObserver } from './mutationObserver.js';
 import { readonly } from '../readonly.js';
 
 export function liveSelector(selector) {
-  const { ref, records } = mutationObserver({ options: { childList: true } });
+  const { ref, records } = mutationObserver({
+    options: { childList: true, subtree: true },
+  });
   /** @type {import('../ref.js').Ref<Element>} */
   const typedRef = ref;
   /** @type {ReturnType<typeof signal<Element | null>} */
   const element = signal(null);
 
   records.subscribe(() => {
-    element.value = typedRef.current?.querySelector(selector);
+    element.value = typedRef.current?.querySelector(selector) || null;
   });
 
   return {
