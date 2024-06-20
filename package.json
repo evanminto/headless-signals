@@ -1,7 +1,7 @@
 {
   "name": "@evanminto/headless-signals",
   "description": "Experimental collection of headless components/hooks, implemented with Preact Signals",
-  "version": "0.4.13",
+  "version": "0.4.14",
   "main": "./src/index.js",
   "type": "module",
   "repository": "git@github.com:evanminto/headless-signals.git",
