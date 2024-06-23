@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import cache from '../../src/tools/cache.js';
+import { cache } from '../../src/tools/cache.js';
 import { signal } from '@preact/signals-core';
 
 describe('cache', () => {
@@ -9,7 +9,7 @@ describe('cache', () => {
     const obj3 = { id: 2 };
     const obj = signal(obj1);
 
-    const { value: cachedObj } = cache(
+    const { result: cachedObj } = cache(
       () => obj.value,
       (o) => o.id.toString(),
     );
@@ -18,6 +18,6 @@ describe('cache', () => {
     obj.value = obj2;
     expect(cachedObj.value).toBe(obj1);
     obj.value = obj3;
-    expect(cachedObj.value).not.toBe(obj1);
+    expect(cachedObj.value).toBe(obj3);
   });
 });

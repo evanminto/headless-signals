@@ -1,4 +1,4 @@
-import { effect, signal } from '@preact/signals-core';
+import { batch, effect, signal } from '@preact/signals-core';
 import { readonly } from '../readonly.js';
 
 /**
@@ -6,9 +6,9 @@ import { readonly } from '../readonly.js';
  * @param {() => T} getValue
  * @param {(value: T) => string} getKey
  */
-export default function cache(getValue, getKey) {
-  /** @type {import('../global.js').Signal<T | null>} */
-  const value = signal(null);
+export function cache(getValue, getKey) {
+  /** @type {import('../global.js').Signal<T>} */
+  const result = signal(null);
   /** @type {import('../global.js').Signal<string | null>} */
   const key = signal(null);
 
@@ -17,12 +17,14 @@ export default function cache(getValue, getKey) {
     const newKey = getKey(newVal);
 
     if (newKey !== key.value) {
-      value.value = newVal;
-      key.value = newKey;
+      batch(() => {
+        result.value = newVal;
+        key.value = newKey;
+      });
     }
   });
 
   return {
-    value: readonly(value),
+    result: readonly(result),
   };
 }
