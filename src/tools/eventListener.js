@@ -1,34 +1,35 @@
-import { effect, signal } from "@preact/signals-core";
-import { ref } from "../ref.js";
-import { readonly } from "../readonly.js";
+import { effect, signal } from '@preact/signals-core';
+import { createRef } from '../ref.js';
+import { readonly } from '../readonly.js';
 
 /**
- * @template {import('../global.d.ts').EventName} T
+ * @template {import('../global.d.ts').EventName} EventName
+ * @template {import('../global.d.ts').EventType<EventName>} EventType
  * @template {EventTarget} Target
- * @param {T} eventName
- * @param {(event: import('../global.d.ts').EventType<T>) => void} [callback]
+ * @param {EventName} eventName
+ * @param {(event: EventType) => void} [callback]
  */
 export function eventListener(eventName, callback) {
-  /** @type {import('../global.d.ts').Ref<Target>} */
-  const targetRef = ref();
-  /** @type {import('../global.d.ts').Signal<import('../global.d.ts').EventType<T> | null>} */
+  /** @type {ReturnType<typeof createRef<Target>>} */
+  const targetRef = createRef();
+  /** @type {ReturnType<typeof signal<EventType | null>>} */
   const eventSignal = signal(null);
 
   const end = effect(() => {
     const controller = new AbortController();
     targetRef.current?.addEventListener(
       eventName,
-      /** @param {import('../global.d.ts').EventType<T>} event */
+      /** @param {EventType} event */
       // @ts-ignore
       (event) => {
         eventSignal.value = event;
         callback?.(event);
       },
-      { signal: controller.signal }
+      { signal: controller.signal },
     );
 
     return () => controller.abort();
   });
-  
+
   return { targetRef, ref: targetRef, event: readonly(eventSignal), end };
 }
