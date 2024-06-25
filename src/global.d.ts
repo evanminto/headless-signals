@@ -19,7 +19,6 @@ export type EventNameToTypeMap = {
   compositionend: CompositionEvent;
   compositionstart: CompositionEvent;
   compositionupdate: CompositionEvent;
-  contentvisibilityautostatechange: ContentVisibilityAutoStateChangeEvent;
   contextmenu: Event;
   copy: ClipboardEvent;
   cut: ClipboardEvent;
