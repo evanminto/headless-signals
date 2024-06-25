@@ -48,4 +48,28 @@ describe('keyboardListener', () => {
     expect(event.value).toBeInstanceOf(MockKeyUpEvent);
     expect(event.value?.key).toBe('a');
   });
+
+  describe('with initial target', () => {
+    it('listens to keypresses only when focused on the target', () => {
+      const input = document.createElement('input');
+      const { ref, event } = keyboardListener({ target: input });
+
+      document.body.appendChild(input);
+      ref(input);
+
+      expect(event.value).toBe(null);
+
+      input.focus();
+      window.dispatchEvent(new MockKeyUpEvent('a'));
+
+      expect(event.value).toBeInstanceOf(MockKeyUpEvent);
+      expect(event.value?.key).toBe('a');
+
+      input.blur();
+      window.dispatchEvent(new MockKeyUpEvent('b'));
+
+      expect(event.value).toBeInstanceOf(MockKeyUpEvent);
+      expect(event.value?.key).toBe('a');
+    });
+  });
 });

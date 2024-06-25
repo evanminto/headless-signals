@@ -3,8 +3,15 @@ import { readonly } from '../readonly.js';
 import { createRef } from '../ref.js';
 import { toggleValue } from './toggleValue.js';
 
-/** @param {boolean} [trapped] */
-export function focusTrap(trapped) {
+/**
+ * @param {{
+ *   trapped?: boolean;
+ *   target?: Element | null;
+ * }} [target]
+ */
+export function focusTrap({ trapped = false, target = null } = {}) {
+  const isNode = typeof window === 'undefined';
+
   /** @param {Element} element */
   function trapFocus(element) {
     /** @type {NodeListOf<HTMLElement>} */
@@ -54,8 +61,7 @@ export function focusTrap(trapped) {
   }
 
   const { on: trappedSignal, toggle } = toggleValue(Boolean(trapped));
-  /** @type {Ref<Element>} */
-  const targetRef = createRef();
+  const targetRef = createRef(target);
 
   effect(() => {
     if (!trappedSignal.value) {
@@ -74,6 +80,12 @@ export function focusTrap(trapped) {
   return {
     trapped: readonly(trappedSignal),
     ref: targetRef,
-    toggle,
+    toggle: () => {
+      if (isNode) {
+        return;
+      }
+
+      toggle();
+    },
   };
 }

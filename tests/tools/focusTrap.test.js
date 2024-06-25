@@ -1,15 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { focusTrap } from '../../src/tools/focusTrap.js';
 
-class MockKeyUpEvent extends Event {
-  key = null;
-
-  constructor(key) {
-    super('keyup');
-    this.key = key;
-  }
-}
-
 describe('focusTrap', () => {
   test('smoke test', () => {
     const { ref, toggle, trapped } = focusTrap();
@@ -24,5 +15,21 @@ describe('focusTrap', () => {
 
     toggle();
     expect(trapped.value).toBe(true);
+  });
+
+  describe('with initial target', () => {
+    test('smoke test', () => {
+      const container = document.createElement('div');
+      const { toggle, trapped } = focusTrap({ target: container });
+
+      const button = document.createElement('button');
+      container.appendChild(button);
+      document.body.appendChild(container);
+
+      expect(trapped.value).toBe(false);
+
+      toggle();
+      expect(trapped.value).toBe(true);
+    });
   });
 });

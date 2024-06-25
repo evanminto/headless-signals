@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vitest } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import { mediaQuery } from '../../src/tools/mediaQuery.js';
 
 class MockMediaQueryList extends EventTarget {

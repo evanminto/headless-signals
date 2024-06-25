@@ -8,10 +8,10 @@ import { readonly } from '../readonly.js';
  * @template {EventTarget} Target
  * @param {EventName} eventName
  * @param {(event: EventType) => void} [callback]
+ * @param {{ target: Target | null }} [options]
  */
-export function eventListener(eventName, callback) {
-  /** @type {ReturnType<typeof createRef<Target>>} */
-  const targetRef = createRef();
+export function eventListener(eventName, callback, { target = null } = {}) {
+  const targetRef = createRef(target);
   /** @type {ReturnType<typeof signal<EventType | null>>} */
   const eventSignal = signal(null);
 

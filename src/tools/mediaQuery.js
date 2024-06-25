@@ -21,12 +21,9 @@ export function mediaQuery(query) {
 
   return endToDispose({
     event,
-    matches: computed(() => {
-      console.log(mqList.value);
-      return Boolean(
-        event.value ? event.value?.matches : mqList.value?.matches,
-      );
-    }),
+    matches: computed(() =>
+      Boolean(event.value ? event.value?.matches : mqList.value?.matches),
+    ),
     end,
     dispose: end,
   });

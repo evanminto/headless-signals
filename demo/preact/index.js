@@ -18,7 +18,7 @@ import {
   useHeadlessSignals,
   useModalControl,
   useReorderableList,
-} from '../../dist/preact/preact.js';
+} from '../../dist/preact.js';
 
 const html = htm.bind(h);
 

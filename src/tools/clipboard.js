@@ -4,13 +4,17 @@ import { readonly } from '../readonly.js';
 export function clipboard() {
   const copied = signal(false);
   const copy = async (text) => {
-    if (!('clipboard' in navigator)) {
+    if (
+      typeof window === 'undefined' ||
+      !('navigator' in window) ||
+      !('clipboard' in navigator)
+    ) {
       return false;
     }
 
-    return navigator.clipboard
-      .writeText(text)
-      .then(() => (copied.value = true));
+    await navigator.clipboard.writeText(text);
+
+    return (copied.value = true);
   };
 
   return {

@@ -22,8 +22,6 @@ export function mousedown() {
   };
 
   return {
-    /** @type {import('../global.d.ts').Ref<Element>} */
-    // @ts-ignore
     ref: forwardedRef([mousedownRef, mouseupRef]),
     down: readonly(down),
     end,

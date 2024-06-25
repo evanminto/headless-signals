@@ -1,30 +1,34 @@
-import { computed, effect, signal } from "@preact/signals-core";
-import { ref } from "../ref.js";
-import { readonly } from "../readonly.js";
+import { computed, effect, signal } from '@preact/signals-core';
+import { createRef } from '../ref.js';
+import { readonly } from '../readonly.js';
 
 /**
  * @param {object} [params]
  * @param {ResizeObserverCallback} [params.onResize]
- * @returns 
+ * @param {Element} [params.target]
+ * @returns
  */
-export function resizeObserver({ onResize } = {}) {
-  /** @type {import('../global.d.ts').Ref<Element | null>} */
-  const targetRef = ref();
-  /** @type {import('../global.d.ts').Signal<ResizeObserverEntry[]>} */
+export function resizeObserver({ onResize, target = null } = {}) {
+  const targetRef = createRef(target);
+  /** @type {ReturnType<typeof signal<ResizeObserverEntry[]>>} */
   const entries = signal([]);
   const entry = computed(
-    () => entries.value.find(({ target }) => target === targetRef.current) || null
+    () =>
+      entries.value.find(({ target }) => target === targetRef.current) || null,
   );
 
-  const observer = new ResizeObserver((roEntries, obs) => {
-    entries.value = roEntries;
-    onResize?.(roEntries, obs);
-  });
+  const observer =
+    typeof ResizeObserver === 'undefined'
+      ? null
+      : new ResizeObserver((roEntries, obs) => {
+          entries.value = roEntries;
+          onResize?.(roEntries, obs);
+        });
 
   const dispose = effect(() => {
     const el = targetRef.current;
 
-    if (el) {
+    if (el && observer) {
       observer.observe(el);
 
       return () => observer.unobserve(el);

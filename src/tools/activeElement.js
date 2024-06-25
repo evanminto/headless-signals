@@ -1,12 +1,31 @@
-import { effect, signal } from "@preact/signals-core";
-import { readonly } from "../readonly.js";
-import { eventListener } from "./eventListener.js";
+import { computed, effect, signal } from '@preact/signals-core';
+import { readonly } from '../readonly.js';
+import { eventListener } from './eventListener.js';
 
 export function activeElement() {
-  /** @type {import('../global.d.ts').Signal<Element | null>} */
+  if (
+    typeof window === 'undefined' ||
+    !window.document.body ||
+    !('activeElement' in window.document)
+  ) {
+    return {
+      element: computed(() => null),
+      end: () => {},
+    };
+  }
+
+  /** @type {ReturnType<typeof signal<Element | null>>} */
   const element = signal(null);
-  const { targetRef: inTargetRef, event: inEvent, end: endIn } = eventListener('focusin');
-  const { targetRef: outTargetRef, event: outEvent, end: endOut } = eventListener('focusout');
+  const {
+    targetRef: inTargetRef,
+    event: inEvent,
+    end: endIn,
+  } = eventListener('focusin');
+  const {
+    targetRef: outTargetRef,
+    event: outEvent,
+    end: endOut,
+  } = eventListener('focusout');
   inTargetRef(document.body);
   outTargetRef(document.body);
 
@@ -29,6 +48,6 @@ export function activeElement() {
       endOutEffect();
       endIn();
       endOut();
-    }
+    },
   };
 }
