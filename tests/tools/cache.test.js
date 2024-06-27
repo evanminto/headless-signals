@@ -11,7 +11,7 @@ describe('cache', () => {
 
     const { result: cachedObj } = cache(
       () => obj.value,
-      (o) => o.id.toString(),
+      (o) => o?.id?.toString() || null,
     );
 
     expect(cachedObj.value).toBe(obj1);
