@@ -17,21 +17,11 @@ npm install @evanminto/headless-signals
 yarn add @evanminto/headless-signals
 ```
 
-Then import in your JavaScript using any of the following styles:
+Then import in your JavaScript:
 
 ```js
-// Contains all exports
-import { clipboard } from '@evanminto/headless-signals';
-
-// Contains only full-featured headless UI components
 import {
-  reorderableList,
-  showPassword,
-  toggleButton,
-} from '@evanminto/headless-signals/components';
-
-// Contains only single-responsibility tools/hooks
-import {
+  // Tools
   activeElement,
   applyProps,
   asyncTask,
@@ -53,14 +43,17 @@ import {
   mutationObserver,
   resizeObserver,
   toggleValue,
-} from '@evanminto/headless-signals/tools';
 
-// Contains Preact bindings for many components/tools
-import {
+  // Components
+  reorderableList,
+  showPassword,
+  toggleButton,
+
+  // Preact hooks
   useHeadlessSignals,
   useModalControl,
   useReorderableList,
-} from '@evanminto/headless-signals/preact';
+} from '@evanminto/headless-signals';
 ```
 
 ## Future Plans
