@@ -14,7 +14,7 @@
     "build": "parcel build",
     "demo:preact": "parcel serve ./demo/preact/index.html",
     "test": "vitest",
-    "postinstall": "yarn build"
+    "prepare": "yarn build"
   },
   "dependencies": {
     "@preact/signals": "^1.2.3",
