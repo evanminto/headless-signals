@@ -17,5 +17,8 @@ export * from './tools/liveSelectors.js';
 export * from './tools/mediaQuery.js';
 export * from './tools/mousedown.js';
 export * from './tools/mutationObserver.js';
+export * from './tools/optimistic.js';
+export * from './tools/pointerDown.js';
+export * from './tools/pointerPosition.js';
 export * from './tools/resizeObserver.js';
 export * from './tools/toggleValue.js';

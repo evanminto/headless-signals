@@ -1,72 +1,19 @@
 {
   "name": "@evanminto/headless-signals",
   "description": "Experimental collection of headless components/hooks, implemented with Preact Signals",
-  "version": "0.5.0",
-  "main": "./src/index.js",
+  "version": "0.5.1",
   "type": "module",
+  "source": "./src/index.js",
+  "main": "./dist/main.js",
+  "types": "./types/index.d.ts",
   "repository": "git@github.com:evanminto/headless-signals.git",
   "author": "Evan Minto <evan.minto@gmail.com>",
   "license": "MIT",
-  "exports": {
-    ".": {
-      "types": "./types/index.d.ts",
-      "default": "./src/index.js"
-    },
-    "./components": {
-      "types": "./types/components.d.ts",
-      "default": "./src/components.js"
-    },
-    "./tools": {
-      "types": "./types/tools.d.ts",
-      "default": "./src/tools.js"
-    },
-    "./preact": {
-      "types": "./types/preact.d.ts",
-      "default": "./src/preact.js"
-    }
-  },
   "scripts": {
     "start": "parcel watch",
-    "copy:types": "cp src/global.d.ts types",
-    "build:src": "parcel build",
-    "build:types": "tsc && yarn run copy:types",
-    "build": "yarn run build:src && yarn run build:types",
+    "build": "parcel build",
     "demo:preact": "parcel serve ./demo/preact/index.html",
     "test": "vitest"
-  },
-  "targets": {
-    "headless-signals": {
-      "source": "./src/index.js",
-      "isLibrary": true,
-      "outputFormat": "esmodule",
-      "context": "browser",
-      "includeNodeModules": false,
-      "distDir": "./dist/"
-    },
-    "components": {
-      "source": "./src/components.js",
-      "isLibrary": true,
-      "outputFormat": "esmodule",
-      "context": "browser",
-      "includeNodeModules": false,
-      "distDir": "./dist/"
-    },
-    "tools": {
-      "source": "./src/tools.js",
-      "isLibrary": true,
-      "outputFormat": "esmodule",
-      "context": "browser",
-      "includeNodeModules": false,
-      "distDir": "./dist/"
-    },
-    "preact": {
-      "source": "./src/preact.js",
-      "isLibrary": true,
-      "outputFormat": "esmodule",
-      "context": "browser",
-      "includeNodeModules": false,
-      "distDir": "./dist/"
-    }
   },
   "dependencies": {
     "@preact/signals": "^1.2.3",
@@ -75,11 +22,14 @@
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
+    "@parcel/bundler-library": "^2.13.2",
+    "@parcel/packager-ts": "2.13.2",
+    "@parcel/transformer-typescript-types": "^2.13.2",
     "eslint": "^9.3.0",
     "htm": "^3.1.1",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "parcel": "^2.12.0",
+    "parcel": "^2.13.2",
     "prettier": "^3.2.5",
     "typescript": "^5.4.5",
     "vitest": "^1.6.0"

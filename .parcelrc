@@ -1,0 +1,10 @@
+{
+  "extends": "@parcel/config-default",
+  "bundler": "@parcel/bundler-library",
+  "transformers": {
+    "types:*.js": [
+      "...",
+      "@parcel/transformer-typescript-types"
+    ]
+  }
+}

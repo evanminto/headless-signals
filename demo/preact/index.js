@@ -1,10 +1,7 @@
 import { h, render } from 'preact';
 import { useComputed, useSignal } from '@preact/signals';
 import htm from 'htm';
-import {
-  toggleButton,
-  showPassword,
-} from '../../dist/components/components.js';
+import { toggleButton, showPassword } from '../../dist/main.js';
 import {
   resizeObserver,
   clipboard,
@@ -13,12 +10,13 @@ import {
   droppable,
   keyboardListener,
   mediaQuery,
-} from '../../dist/tools/tools.js';
+} from '../../dist/main.js';
 import {
   useHeadlessSignals,
   useModalControl,
   useReorderableList,
-} from '../../dist/preact.js';
+} from '../../dist/main.js';
+import { pointerPosition } from '../../dist/main.js';
 
 const html = htm.bind(h);
 
@@ -184,11 +182,22 @@ function ModalControl() {
   `;
 }
 
+function MovableElement() {
+  const { x, y } = useHeadlessSignals(() => pointerPosition());
+
+  return html`
+    <div
+      style="position: absolute; inset-block-start: ${y.value}; inset-inline-start: ${x.value}; background: red; width: 20px; height: 20px; border-radius: 40px;"
+    ></div>
+  `;
+}
+
 const root = document.querySelector('#preact');
 
 if (root) {
   render(
     html`
+      <${MovableElement} />
       <div>
         <${Button} />
       </div>
