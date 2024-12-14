@@ -13,7 +13,8 @@
     "start": "parcel watch",
     "build": "parcel build",
     "demo:preact": "parcel serve ./demo/preact/index.html",
-    "test": "vitest"
+    "test": "vitest",
+    "postinstall": "yarn build"
   },
   "dependencies": {
     "@preact/signals": "^1.2.3",
