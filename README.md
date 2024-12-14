@@ -42,6 +42,7 @@ import {
   mousedown,
   mutationObserver,
   resizeObserver,
+  stateMachine,
   toggleValue,
 
   // Components
